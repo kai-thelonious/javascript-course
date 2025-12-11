@@ -117,7 +117,6 @@ function displayEachBook() {
                 </div>
             </div>
         `;
-        // Append the new card HTML to the accumulating string
         allCardsHTML += cardHTML;
     });
 
@@ -147,8 +146,6 @@ function attachBookEventListeners() {
 
         })
     })
-
-
 }
 
 
