@@ -1,15 +1,30 @@
-
-// Assignment
 let myLibrary = []
 const card = document.querySelector('#card')
 const newBookBtn = document.querySelector('#new-book-btn')
 
+const sampleTitles = [
+    "The Great Gatsby", "1984", "Pride and Prejudice", "To Kill a Mockingbird",
+    "The Catcher in the Rye", "Moby Dick", "War and Peace", "Ulysses",
+    "The Odyssey", "Hamlet", "Don Quixote", "The Divine Comedy"
+];
+const sampleAuthors = [
+    "F. Scott Fitzgerald", "George Orwell", "Jane Austen", "Harper Lee",
+    "J.D. Salinger", "Herman Melville", "Leo Tolstoy", "James Joyce",
+    "Homer", "William Shakespeare", "Miguel de Cervantes", "Dante Alighieri"
+];
 
-addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 295, false)
-addBookToLibrary('yjyj', 'yjyj', 200, false)
-addBookToLibrary('Basdasd', 'yjyjdf', 105, true)
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
+for (let i = 0; i < 5; i++) {
+    const randomTitle = sampleTitles[getRandomInt(0, sampleTitles.length - 1)];
+    const randomAuthor = sampleAuthors[getRandomInt(0, sampleAuthors.length - 1)];
+    const randomPages = getRandomInt(100, 1000);
+    const randomRead = Math.random() < 0.5;
 
+    addBookToLibrary(randomTitle, randomAuthor, randomPages, randomRead);
+}
 
 displayEachBook(myLibrary)
 
