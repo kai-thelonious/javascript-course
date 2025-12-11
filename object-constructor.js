@@ -1,22 +1,8 @@
-/*function Book(title, author, pages, read) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
-    // this.info = `${this.title} by ${this.author}, ${this.pages}, ${this.read ? "read" : "not read yet"}`
-    // return this.info
-    this.info = function () {
-        return `${this.title} by ${this.author}, ${this.pages}, ${this.read ? "read" : "not read yet"}`
-    }
-}
-const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 295, false)
-
-console.log(theHobbit.info())*/
 
 // Assignment
 let myLibrary = []
 const card = document.querySelector('#card')
-const button = document.querySelector('button')
+const newBookBtn = document.querySelector('#new-book-btn')
 
 
 addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 295, false)
@@ -27,7 +13,7 @@ addBookToLibrary('Basdasd', 'yjyjdf', 105, true)
 
 displayEachBook(myLibrary)
 
-button.addEventListener("click", () => {
+newBookBtn.addEventListener("click", () => {
     const form = document.querySelector('.form-container')
 
     if (form.classList.contains('hidden')) {
@@ -39,6 +25,7 @@ button.addEventListener("click", () => {
     }
 })
 
+// check form
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('form')
 
@@ -54,10 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(elements[3].checked)
 
         addBookToLibrary(title, author, pages, read)
-        //console.log(myLibrary)
-
         displayEachBook()
         form.reset()
+        
+        // Hide form after submission
+        const formContainer = document.querySelector('.form-container')
+        formContainer.classList.add('hidden')
+        formContainer.classList.remove('visible')
     })
 
 })
@@ -77,37 +67,6 @@ function addBookToLibrary(title, author, pages, read) {
     return myLibrary
 
 }
-
-/*function displayEachBook() {
-    card.innerHTML = ''
-    myLibrary.forEach(book => {
-        const bookCard = document.createElement('div')
-        bookCard.classList.add('book-card')
-
-        const title = document.createElement('h3')
-        title.textContent = book.title
-
-        const author = document.createElement('p')
-        author.textContent = `Author: ${book.author}`
-
-        const pages = document.createElement('p')
-        pages.textContent = `Pages: ${book.pages}`
-
-        const read = document.createElement('p')
-        read.textContent = `Status: ${book.read ? 'Read' : 'Not read yet'}`
-
-        const button = document.createElement('button')
-        button.textContent =
-
-        bookCard.appendChild(title)
-        bookCard.appendChild(author)
-        bookCard.appendChild(pages)
-        bookCard.appendChild(read)
-
-        card.appendChild(bookCard)
-    })
-}*/
-
 
 function displayEachBook() {
     // 1. CLEAR THE CONTAINER
@@ -147,66 +106,40 @@ function displayEachBook() {
         allCardsHTML += cardHTML;
     });
 
-    // 2. INSERT ALL HTML AT ONCE (efficient)
     card.innerHTML = allCardsHTML;
-
-    // 3. ATTACH LISTENERS TO THE NEW BUTTONS
     attachBookEventListeners()
 
 }
 
-// NOTE: You must have these listener functions defined and working elsewhere:
 function attachBookEventListeners() {
     const removeButtons = document.querySelectorAll('.remove-btn')
+    const readButton = document.querySelectorAll('.toggle-read-btn')
 
     removeButtons.forEach(button => {
         button.addEventListener("click", (e) => {
             const bookId = e.target.dataset.id
             console.log('Clicked remove for ID:', bookId)
 
-            // Find the card in the DOM using the data-id attribute
-            const cardToRemove = document.querySelector(`.book-card[data-id="${bookId}"]`)
+            removeBookFromLibrary(bookId)
 
-            if (cardToRemove) {
-                console.log('Found card to remove', cardToRemove)
-                // Option 1: Remove from DOM directly
-                cardToRemove.remove()
-                
-                // Option 2 (Better): Remove from array and re-render
-                // removeBookFromLibrary(bookId)
-                // displayEachBook()
-            }
         })
     })
-    const readButton = document.querySelectorAll('.toggle-read-btn')
 
     readButton.forEach(button => {
         button.addEventListener("click", (e) => {
             const bookId = e.target.dataset.id
             toggleReadStatus(bookId)
 
-            /*
-            console.log(cardToChange)
-            Book.changeRead()*/
         })
     })
 
 
-   /* readButton.forEach(button => {
-        button.addEventListener("click", (e) => {
-            //const bookId = e.target.dataset.id
-            //const cardToChange = document.querySelector(`.book-card[data-id="${bookId}"]`)
-
-            console.log('click')
-            //console.log(Book.changeRead())
-
-        })
-    })*/
 }
 
 
 function removeBookFromLibrary(bookId) {
-
+    myLibrary = myLibrary.filter(book => book.uniqueId !== bookId)
+    displayEachBook()
 }
 
 function toggleReadStatus(bookId) {

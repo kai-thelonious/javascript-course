@@ -8,31 +8,46 @@
 </head>
 <body>
 
-<div id="card">
+<header class="header">
+    <h1>My Library</h1>
+</header>
 
-</div>
+<main class="main-content">
+    <div class="controls">
+        <button id="new-book-btn" class="btn btn-primary">New Book</button>
+    </div>
 
-<button>New Book</button>
+    <div id="card" class="book-grid">
+        <!-- Books will be injected here -->
+    </div>
 
-<div class="form-container hidden">
-    <form>
-        <label for="title">Title</label>
-        <input type="text" id="title" name="book_title" required>
+    <div class="form-container hidden">
+        <form class="book-form">
+            <h2>Add New Book</h2>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="book_title" required placeholder="e.g. The Hobbit">
+            </div>
 
-        <label for="author">Author</label>
-        <input type="text" id="author" name="book_author" required>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" id="author" name="book_author" required placeholder="e.g. J.R.R. Tolkien">
+            </div>
 
-        <label for="pages">Pages</label>
-        <input type="number" id="pages" name="book_pages" required>
+            <div class="form-group">
+                <label for="pages">Pages</label>
+                <input type="number" id="pages" name="book_pages" required placeholder="e.g. 295">
+            </div>
 
-        <label for="read">Read?</label>
-        <input type="checkbox" id="read" name="book_read">
+            <div class="form-group checkbox-group">
+                <label for="read">Have you read it?</label>
+                <input type="checkbox" id="read" name="book_read">
+            </div>
 
-        <button type="submit">Add Book</button>
-    </form>
-</div>
-
-
+            <button type="submit" class="btn btn-submit">Add Book</button>
+        </form>
+    </div>
+</main>
 
 <script src="object-constructor.js"></script>
 </body>
