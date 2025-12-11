@@ -133,7 +133,6 @@ function attachBookEventListeners() {
         button.addEventListener("click", (e) => {
             const bookId = e.target.dataset.id
             console.log('Clicked remove for ID:', bookId)
-
             removeBookFromLibrary(bookId)
 
         })
