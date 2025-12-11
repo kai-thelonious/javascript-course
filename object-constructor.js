@@ -19,7 +19,6 @@ const card = document.querySelector('#card')
 const button = document.querySelector('button')
 
 
-
 addBookToLibrary('The Hobbit', 'J.R.R. Tolkien', 295, false)
 addBookToLibrary('yjyj', 'yjyj', 200, false)
 addBookToLibrary('Basdasd', 'yjyjdf', 105, true)
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 })
 
-
+// Book constructor
 function Book(title, author, pages, read) {
     this.title = title
     this.author = author
@@ -77,10 +76,9 @@ function addBookToLibrary(title, author, pages, read) {
     myLibrary.push(addBook)
     return myLibrary
 
-
 }
 
-function displayEachBook() {
+/*function displayEachBook() {
     card.innerHTML = ''
     myLibrary.forEach(book => {
         const bookCard = document.createElement('div')
@@ -98,6 +96,9 @@ function displayEachBook() {
         const read = document.createElement('p')
         read.textContent = `Status: ${book.read ? 'Read' : 'Not read yet'}`
 
+        const button = document.createElement('button')
+        button.textContent =
+
         bookCard.appendChild(title)
         bookCard.appendChild(author)
         bookCard.appendChild(pages)
@@ -105,4 +106,118 @@ function displayEachBook() {
 
         card.appendChild(bookCard)
     })
+}*/
+
+
+function displayEachBook() {
+    // 1. CLEAR THE CONTAINER
+    card.innerHTML = '';
+
+    // Use a string to build all the HTML content efficiently
+    let allCardsHTML = '';
+
+    myLibrary.forEach(book => {
+        // Use innerHTML structure (template literal) to build the card
+        const cardHTML = `
+            <div class="book-card" data-id="${book.uniqueId}">
+                <h3>${book.title}</h3>
+                <p>Author: ${book.author}</p>
+                <p>Pages: ${book.pages}</p>
+                <p class="read-status">Status: <span>${book.read ? "Read" : "Not Read Yet"}</span></p>
+                
+                <div class="card-actions">
+                    <button 
+                        type="button" 
+                        class="remove-btn" 
+                        data-id="${book.uniqueId}" 
+                    >
+                        Remove Book
+                    </button>
+                    <button 
+                        type="button" 
+                        class="toggle-read-btn" 
+                        data-id="${book.uniqueId}"
+                    >
+                        Mark as ${book.read ? "Unread" : "Read"}
+                    </button>
+                </div>
+            </div>
+        `;
+        // Append the new card HTML to the accumulating string
+        allCardsHTML += cardHTML;
+    });
+
+    // 2. INSERT ALL HTML AT ONCE (efficient)
+    card.innerHTML = allCardsHTML;
+
+    // 3. ATTACH LISTENERS TO THE NEW BUTTONS
+    attachBookEventListeners()
+
+}
+
+// NOTE: You must have these listener functions defined and working elsewhere:
+function attachBookEventListeners() {
+    const removeButtons = document.querySelectorAll('.remove-btn')
+
+    removeButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const bookId = e.target.dataset.id
+            console.log('Clicked remove for ID:', bookId)
+
+            // Find the card in the DOM using the data-id attribute
+            const cardToRemove = document.querySelector(`.book-card[data-id="${bookId}"]`)
+
+            if (cardToRemove) {
+                console.log('Found card to remove', cardToRemove)
+                // Option 1: Remove from DOM directly
+                cardToRemove.remove()
+                
+                // Option 2 (Better): Remove from array and re-render
+                // removeBookFromLibrary(bookId)
+                // displayEachBook()
+            }
+        })
+    })
+    const readButton = document.querySelectorAll('.toggle-read-btn')
+
+    readButton.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const bookId = e.target.dataset.id
+            toggleReadStatus(bookId)
+
+            /*
+            console.log(cardToChange)
+            Book.changeRead()*/
+        })
+    })
+
+
+   /* readButton.forEach(button => {
+        button.addEventListener("click", (e) => {
+            //const bookId = e.target.dataset.id
+            //const cardToChange = document.querySelector(`.book-card[data-id="${bookId}"]`)
+
+            console.log('click')
+            //console.log(Book.changeRead())
+
+        })
+    })*/
+}
+
+
+function removeBookFromLibrary(bookId) {
+
+}
+
+function toggleReadStatus(bookId) {
+    myLibrary.forEach(book => {
+        if (book.uniqueId === bookId) {
+            book.changeRead()
+        }
+    })
+    displayEachBook()
+}
+
+Book.prototype.changeRead = function() {
+  this.read = !this.read
 }
